@@ -1,12 +1,17 @@
-[Unit]
-Description = Catalogue Service
 
-[Service]
-User=roboshop
-Environment=MONGO=true
-Environment=MONGO_URL="mongodb://localhost:27017/catalogue"
-ExecStart=/bin/node /app/server.js
-SyslogIdentifier=catalogue
+script_location=$(pwd)
+curl -sL https://rpm.nodesource.com/setup_lts.x | bash
+yum install nodejs -y
+useradd roboshop
+mkdir /app
+curl -L -o /tmp/catalogue.zip https://roboshop-artifacts.s3.amazonaws.com/catalogue.zip
+cd /app
+unzip /tmp/catalogue.zip
+cd /app
+npm install
 
-[Install]
-WantedBy=multi-user.target
+cp ${script_location}/files/catalogue.service /etc/systemd/system/catalogue.service
+
+systemctl daemon-reload
+systemctl enable catalogue
+systemctl start catalogue
