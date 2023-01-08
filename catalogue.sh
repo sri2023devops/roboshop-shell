@@ -1,6 +1,6 @@
 source common.sh
 
-print_head "Configuring NodeJS"
+print_head "Configuring NodeJS Repos"
 curl -sL https://rpm.nodesource.com/setup_lts.x | bash &>>${LOG}
 status_check
 
@@ -9,7 +9,10 @@ yum install nodejs -y &>>${LOG}
 status_check
 
 print_head "Add Application User"
-useradd roboshop &>>${LOG}
+id roboshop &>>${LOG}
+if [ $? -ne 0 ]; then
+  useradd roboshop &>>${LOG}
+fi
 status_check
 
 mkdir -p /app &>>${LOG}
@@ -40,15 +43,15 @@ print_head "Reload SystemD"
 systemctl daemon-reload &>>${LOG}
 status_check
 
-print_head "nable Catalogue Service"
+print_head "Enable Catalogue Service "
 systemctl enable catalogue &>>${LOG}
 status_check
 
-print_head "Start Catalogue service"
+print_head "Start Catalogue service "
 systemctl start catalogue &>>${LOG}
 status_check
 
-print_head "Configuring Mongo Repo"
+print_head "Configuring Mongo Repo "
 cp ${script_location}/files/mongodb.repo /etc/yum.repos.d/mongodb.repo &>>${LOG}
 status_check
 
@@ -57,5 +60,5 @@ yum install mongodb-org-shell -y &>>${LOG}
 status_check
 
 print_head "Load Schema"
-mongo --host mongodb-dev.devopsb70.online </app/schema/catalogue.js &>>${LOG}
+mongo --host mongodb-dev.sreedevops.online </app/schema/catalogue.js &>>${LOG}
 status_check
