@@ -1,18 +1,18 @@
 script_location=$(pwd)
+LOG=/tmp/roboshop.log
 
 
-yum install nginx -y
-systemctl enable nginx
-systemctl start nginx
-rm -rf /usr/share/nginx/html/*
+yum install nginx -y &>>${LOG}
 
-curl -o /tmp/frontend.zip https://roboshop-artifacts.s3.amazonaws.com/frontend.zip
+rm -rf /usr/share/nginx/html/* &>>${LOG}
 
-cd /usr/share/nginx/html
-unzip /tmp/frontend.zip
-cp ${script_location}/files/nginx-roboshop.conf /etc/nginx/default.d/roboshop.conf
+curl -o /tmp/frontend.zip https://roboshop-artifacts.s3.amazonaws.com/frontend.zip &>>${LOG}
 
+cd /usr/share/nginx/html &>>${LOG}
+unzip /tmp/frontend.zip &>>${LOG}
+cp ${script_location}/files/nginx-roboshop.conf /etc/nginx/default.d/roboshop.conf &>>${LOG}
 
-systemctl restart nginx
+systemctl enable nginx &>>${LOG}
+systemctl restart nginx &>>${LOG}
 
 
