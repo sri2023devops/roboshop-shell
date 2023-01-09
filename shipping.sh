@@ -6,6 +6,6 @@ if [ -z "${root_mysql_password}" ]; then
 fi
 
 component=shipping
-schema_load=truee
+schema_load=true
 schema_type=mysql
 MAVEN
